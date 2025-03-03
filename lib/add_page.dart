@@ -16,6 +16,8 @@ class _AddPageState extends State<AddPage> {
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+
   DateTime? _selectedDate;
   String? _selectedCategory;
 
@@ -28,6 +30,7 @@ class _AddPageState extends State<AddPage> {
       _nameController.text = widget.plant!.name;
       _quantityController.text = widget.plant!.quantity.toString();
       _selectedDate = DateFormat('yyyy-MM-dd').parse(widget.plant!.datePlanted);
+      _dateController.text = DateFormat('dd/MM/yyyy').format(_selectedDate!);
       _selectedCategory = widget.plant!.category;
     }
   }
@@ -39,9 +42,11 @@ class _AddPageState extends State<AddPage> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
+
     if (picked != null) {
       setState(() {
         _selectedDate = picked;
+        _dateController.text = DateFormat('dd/MM/yyyy').format(picked);
       });
     }
   }
@@ -100,6 +105,7 @@ class _AddPageState extends State<AddPage> {
                 },
               ),
               const SizedBox(height: 15),
+
               TextFormField(
                 controller: _quantityController,
                 decoration: const InputDecoration(
@@ -118,13 +124,28 @@ class _AddPageState extends State<AddPage> {
                 },
               ),
               const SizedBox(height: 15),
-              ElevatedButton(
-                onPressed: () => _selectDate(context),
-                child: Text(_selectedDate == null
-                    ? "เลือกวันที่ปลูก"
-                    : "วันที่ปลูก: ${DateFormat('dd/MM/yyyy').format(_selectedDate!)}"),
+
+              // ช่องเลือกวันที่ (TextField + IconButton)
+              TextFormField(
+                controller: _dateController,
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: "วันที่ปลูก",
+                  border: const OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.calendar_today, color: Colors.green),
+                    onPressed: () => _selectDate(context),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "กรุณาเลือกวันที่ปลูก";
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 15),
+
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: "ประเภทพืช",
@@ -150,6 +171,7 @@ class _AddPageState extends State<AddPage> {
                 },
               ),
               const SizedBox(height: 20),
+
               ElevatedButton(
                 onPressed: _submitForm,
                 child: Text(
