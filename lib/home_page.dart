@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
       body: plants.isEmpty
           ? const Center(
               child: Text(
-                "🌱 ยังไม่มีพืชในสวนของคุณ\nกดปุ่ม ➕ เพื่อเพิ่มพืชใหม่",
+                "ยินดีต้อนรับ😊\n\n 🌱 ยังไม่มีพืชในสวนของคุณ\nกดปุ่ม ➕ เพื่อเพิ่มพืชใหม่",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18),
               ),
@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "ชื่อ: ${plant.name}",
+                            "ต้น: ${plant.name}",
                             style: const TextStyle(
                                 fontSize: 22, fontWeight: FontWeight.bold),
                           ),
